@@ -1,0 +1,23 @@
+# Use shell to find name of root folder. Possible but horrible to do in make.
+PROJECT_NAME = $(shell basename "$(realpath ../)")
+
+DEVICE = stm32l073xx
+DEVICE_FAMILY = stm32l0xx
+DEVICE_FULL_NAME = STM32L073RZ
+
+USE_ST_HAL = true
+USE_ST_BOARD = true
+
+SRC_PATH ?= ../src
+V = 1
+
+# Add local application file
+APPLICATION_SRCS += main.c
+
+# Add Some ST HAL File
+APPLICATION_SRCS += stm32l0xx_hal_uart.c
+
+
+# Include the main Makefile
+STM_BASE_PATH ?= ../../../stm32_cube_l0
+include $(STM_BASE_PATH)/make/Makefile
