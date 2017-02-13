@@ -3,16 +3,19 @@ PROJECT_NAME = $(shell basename "$(realpath ../)")
 
 DEVICE = stm32l073xx
 DEVICE_FAMILY = stm32l0xx
+#DEVICE_FULL_NAME is used to get linker script file
 DEVICE_FULL_NAME = STM32L073RZ
 
 USE_ST_HAL = true
 USE_ST_BOARD = true
 
 SRC_PATH ?= ../src
+
+# Verbose is needed for eclipse user for the indexer
 V = 1
 
 # Add local application file
-APPLICATION_SRCS += main.c
+APPLICATION_SRCS += main.c stm32l0xx_it.c
 
 # Add Some ST HAL File
 APPLICATION_SRCS += stm32l0xx_hal_uart.c

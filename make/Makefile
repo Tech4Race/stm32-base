@@ -103,7 +103,7 @@ ifeq ($(USE_ST_HAL), true)
 	
 	SOURCE_PATHS += $(HAL_PATH)/Src
 	
-	# Basic All source, other must ba add by user
+	# Basic hal source, other must be added by user from its makefile
 	APPLICATION_SRCS += $(DEVICE_FAMILY)_hal.c 
 	APPLICATION_SRCS += $(DEVICE_FAMILY)_hal_rcc.c
 	APPLICATION_SRCS += $(DEVICE_FAMILY)_hal_rcc_ex.c
@@ -111,9 +111,11 @@ ifeq ($(USE_ST_HAL), true)
 	APPLICATION_SRCS += $(DEVICE_FAMILY)_hal_gpio.c
 	APPLICATION_SRCS += $(DEVICE_FAMILY)_hal_pwr_ex.c
 	
+	CFLAGS += -DUSE_HAL_DRIVER
+	
 endif
 
-# Add paths for ST Board Definition if used (all for the moment)
+# Add all paths for ST Board Definition if used
 ifeq ($(USE_ST_BOARD), true)
 	BSP_PATH ?= $(BASE_DIR)/Drivers/BSP
 	
@@ -137,12 +139,13 @@ VPATH = $(SOURCE_PATHS)
 
 OUTPUT_PATH ?= _build/
 
-CPUFLAGS += -mthumb -mcpu=cortex-m0plus -mfloat-abi=soft
-CFLAGS += -std=c99 -c $(CPUFLAGS) -Wall -Wno-strict-aliasing
+CPUFLAGS += -mcpu=cortex-m0plus -mthumb -mfloat-abi=soft
+ASFLAGS += $(CPUFLAGS) -g
+CFLAGS += -std=gnu99 -c $(CPUFLAGS) -Wall
 CFLAGS += -D$(DEVICE_UP) -D$(BOARD)
-CFLAGS += -s -ffunction-sections -fdata-sections -fmessage-length=0
+CFLAGS += -s -fdata-sections -ffunction-sections
 CFLAGS += $(CMSIS_INCLUDE) $(LIBRARY_INCLUDES) -MD
-LDFLAGS += $(CPUFLAGS) -L $(BASE_DIR)/make/ld -T $(LINKER_SCRIPT) -Wl,--gc-sections -Wl,-Map=$(OUTPUT_PATH)$(OUTPUT_NAME).Map
+LDFLAGS += $(CPUFLAGS) -specs=nosys.specs -specs=nano.specs -L $(BASE_DIR)/make/ld -T $(LINKER_SCRIPT) -Wl,--gc-sections -Wl,-Map=$(OUTPUT_PATH)$(OUTPUT_NAME).Map -lm
 OBJDUMP_FLAGS += --disassemble-all --source --disassembler-options=force-thumb -C --section-headers
 
 HEX = $(OUTPUT_PATH)$(OUTPUT_NAME).hex
@@ -183,6 +186,7 @@ endif
 all: $(OBJS) $(OBJS_AS) $(HEX)
 
 debug: CFLAGS += -g
+debug: $(OBJS) $(OBJS_AS) $(HEX)
 
 rebuild: clean all
 
@@ -204,12 +208,12 @@ size: $(ELF)
 $(OUTPUT_PATH)%.o: %.c
 	@$(MAKE_BUILD_FOLDER)
 	$(PRINT_CC)
-	$(Q)$(CC) $(LDFLAGS) $(CFLAGS) $< -o $@
+	$(Q)$(CC) $(CFLAGS) $< -o $@
 
 $(OUTPUT_PATH)%.os: %.s
 	@$(MAKE_BUILD_FOLDER)
 	$(PRINT_AS)
-	$(Q)$(AS) $< -o $@
+	$(Q)$(AS) $(ASFLAGS) $< -o $@
 
 -include $(DEPS)
 
