@@ -35,7 +35,7 @@
 
 DEVICE ?= stm32l073xx
 DEVICE_FAMILY ?= stm32l0xx
-DEVICE_FULL_NAME ?= STM32L073RZ
+DEVICE_FULL_NAME ?= STM32L073RZT
 
 # for example stm32l073xx => STM32L073xx
 DEVICE_UP ?= $(shell echo $(subst xx,,$(DEVICE)) | tr a-z A-Z)xx
@@ -129,7 +129,7 @@ endif
 
 # Define Compilation parameters
 
-LINKER_SCRIPT ?= $(BASE_DIR)/make/ld/$(DEVICE_FULL_NAME_UP)Tx_FLASH.ld
+LINKER_SCRIPT ?= $(BASE_DIR)/make/ld/$(DEVICE_FULL_NAME_UP)x_FLASH.ld
 OUTPUT_NAME ?= $(PROJECT_NAME)
 
 LIBRARY_INCLUDES = $(addprefix -I,$(LIBRARY_PATHS))

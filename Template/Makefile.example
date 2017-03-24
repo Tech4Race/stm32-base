@@ -4,7 +4,7 @@ PROJECT_NAME = $(shell basename "$(realpath ../)")
 DEVICE = stm32l073xx
 DEVICE_FAMILY = stm32l0xx
 #DEVICE_FULL_NAME is used to get linker script file
-DEVICE_FULL_NAME = STM32L073RZ
+DEVICE_FULL_NAME = STM32L073RZT
 
 USE_ST_HAL = true
 USE_ST_BOARD = true
@@ -22,5 +22,5 @@ APPLICATION_SRCS += stm32l0xx_hal_uart.c
 
 
 # Include the main Makefile
-STM_BASE_PATH ?= ../../../stm32_cube_l0
+STM_BASE_PATH ?= ../../../stm32_base
 include $(STM_BASE_PATH)/make/Makefile
