@@ -81,7 +81,7 @@ START_CODE ?= startup_$(DEVICE).s
 SYSTEM_FILE ?= system_$(DEVICE_FAMILY).c
 
 # If not set in app makefile, lets optimize for size
-CFLAGS += -Os #Optimize for size
+all: CFLAGS += -Os #Optimize for size (only in release)
 CFLAGS += -fomit-frame-pointer #Don't keep the frame pointer in a register for functions that don't need one
 
 #Define Path Shortcut
