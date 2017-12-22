@@ -32,7 +32,6 @@
 ##    STM_BASE_PATH ?= ../../../stm32_cube_l0
 ##    include $(STM_BASE_PATH)/make/Makefile
 
-
 DEVICE ?= stm32l073xx
 DEVICE_FAMILY ?= stm32l0xx
 DEVICE_FULL_NAME ?= STM32L073RZT
@@ -123,9 +122,11 @@ ifeq ($(USE_ST_BOARD), true)
 	LIBRARY_PATHS += $(BSP_PATH)/STM32L0xx_Nucleo_32
 	LIBRARY_PATHS += $(BSP_PATH)/STM32L073Z_EVAL
 	LIBRARY_PATHS += $(BSP_PATH)/STM32L0538-Discovery
-
+	LIBRARY_PATHS += $(BSP_PATH)/B-L072Z-LRWAN1
+	SOURCE_PATHS+= $(BSP_PATH)/B-L072Z-LRWAN1
+	APPLICATION_SRCS += b-l072z-lrwan1.c
+	
 endif
-
 
 # Define Compilation parameters
 
